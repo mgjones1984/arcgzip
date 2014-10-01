@@ -2,6 +2,7 @@
 
 """Read and write gzip archives."""
 
+from __future__ import print_function
 import struct
 import zlib
 import io
@@ -285,7 +286,7 @@ class GzipFile:
 ## EntryPoint
 
 def usage():
-    sys.stderr.write('usage: arcgzip.py [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]\n')
+    print('usage: arcgzip.py [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
 def main():
     import getopt
@@ -318,7 +319,7 @@ def main():
     if action == COMPRESS:
         with GzipFile.open(args[0], 'a') as gzip:
             for filename in args[1:]:
-                sys.stderr.write('adding: {}\n'.format(filename))
+                print('adding: {}'.format(filename), file=sys.stderr)
                 gzip.add(open(filename, 'rb'), compresslevel=compresslevel)
 
     elif action == DECOMPRESS:
@@ -332,8 +333,7 @@ def main():
                 if os.path.exists(filename):
                     if _input('{} exists. overwrite? [y/n]: '.format(filename)) != 'y':
                         continue
-
-                sys.stderr.write('extracting: {}\n'.format(filename))
+                print('extracting: {}'.format(filename), file=sys.stderr)
                 info = gzip.getinfo(filename)
 
                 with open(filename, 'wb') as fw:
