@@ -9,7 +9,9 @@ import time
 import os
 import sys
 
-## CONSTANT
+#--------------------
+# Constants
+#--------------------
 HEADER_FORMAT = '<2sBBIBB'
 HEADER_SIZE = 10
 
@@ -30,11 +32,15 @@ BUFSIZE = 4096
 # [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
 FIELD_ENCODING = 'latin-1'
 
-## Exceptions
+#--------------------
+# Exception
+#--------------------
 class GzipError(Exception):
     """ Base Exception """
 
-## GzipInfo class
+#--------------------
+# GzipInfo class
+#--------------------
 class GzipInfo:
     def __init__(self, CM=8, FLG=0, MTIME=0, XFL=0, OS=255, EXFIELD=b'', FNAME='', FCOMMENT='', CRC16=0):
         self.CM = CM
@@ -152,7 +158,9 @@ class GzipInfo:
 
         return res
 
-## GzipFile
+#--------------------
+# GzipFile class
+#--------------------
 class GzipFile:
     def __init__(self, fileobj=None, mode='r'):
         self.fileobj = fileobj
