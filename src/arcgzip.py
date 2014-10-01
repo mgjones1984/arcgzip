@@ -283,6 +283,31 @@ class GzipFile:
 
         return io.BytesIO(buff)
 
+    def addfile(self, filename, compresslevel=6):
+        """Append the file (denoted by 'filename') to archive."""
+
+        if self.mode not in ('w', 'a'):
+            raise IOError('file not writible')
+
+        with open(filename, 'rb') as fileobj:
+            self.add(fileobj, compresslevel=compresslevel)
+
+    def extractfile(self, filename):
+        """Extract the 'filename' to the current working directory."""
+
+        if self.mode != 'r':
+            raise IOError('file not open for reading')
+
+        info = self.getinfo(filename)
+
+        if not info:
+            raise ValueError("No such file in the archive: '{}'".format(filename))
+
+        with open(filename, 'wb') as fw:
+            fw.write(gzip.extract(gzipinfo=info).read())
+
+        os.utime(filename, (int(time.time()), info.MTIME))
+
 ## EntryPoint
 
 def usage():
