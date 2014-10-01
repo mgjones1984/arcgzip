@@ -345,7 +345,7 @@ def main():
         with GzipFile.open(args[0], 'a') as gzip:
             for filename in args[1:]:
                 print('adding: {}'.format(filename), file=sys.stderr)
-                gzip.add(open(filename, 'rb'), compresslevel=compresslevel)
+                gzip.addfile(filename, compresslevel=compresslevel)
 
     elif action == DECOMPRESS:
         with GzipFile.open(args[0]) as gzip:
@@ -359,12 +359,7 @@ def main():
                     if _input('{} exists. overwrite? [y/n]: '.format(filename)) != 'y':
                         continue
                 print('extracting: {}'.format(filename), file=sys.stderr)
-                info = gzip.getinfo(filename)
-
-                with open(filename, 'wb') as fw:
-                    fw.write(gzip.extract(gzipinfo=info).read())
-
-                os.utime(filename, (int(time.time()), info.MTIME))
+                gzip.extractfile(filename)
 
     elif action == LIST:
         with GzipFile.open(args[0]) as gzip:
