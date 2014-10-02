@@ -30,8 +30,7 @@ FRESERVED = 224
 
 BUFSIZE = 4096
 
-# [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
-FIELD_ENCODING = 'latin-1'
+FIELD_ENCODING = 'latin-1' # [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
 
 #--------------------
 # Exception
@@ -308,8 +307,9 @@ class GzipFile:
 
         os.utime(filename, (int(time.time()), info.MTIME))
 
-## EntryPoint
-
+#--------------------
+# Entry Point
+#--------------------
 def usage():
     print('usage: arcgzip.py [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
