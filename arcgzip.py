@@ -303,7 +303,7 @@ class GzipFile:
             raise ValueError("No such file in the archive: '{}'".format(filename))
 
         with open(filename, 'wb') as fw:
-            fw.write(gzip.extract(gzipinfo=info).read())
+            fw.write(self.extract(gzipinfo=info).read())
 
         os.utime(filename, (int(time.time()), info.MTIME))
 
