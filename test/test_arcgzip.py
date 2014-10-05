@@ -1,6 +1,7 @@
 import unittest
-from arcgzip import GzipFile, GzipInfo
 import os
+import io
+from arcgzip import GzipFile, GzipInfo
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
@@ -34,5 +35,45 @@ class TestReadGzip(unittest.TestCase):
             fp = gzip.extract(self.FILE_ATTR["FNAME"])
             self.assertEqual(fp.read(), self.FILE_CONTENTS)
 
+class TestWriteGzip(unittest.TestCase):
+    ## TEST SETTINGS
+    TEST_FILE = os.path.join(DATA_DIR, "test.txt")
+
+    ## Test cases
+    def test_write_attributes(self):
+        rawio = io.BytesIO()
+
+        gzip_writable = GzipFile(rawio, mode="w")
+        gzip_writable.addfile(self.TEST_FILE)
+
+        rawio.seek(0)
+
+        gzip_readable = GzipFile(rawio, mode="r")
+        gzip_readable._load()
+
+        info =  gzip_readable.gzipinfos[0]
+    
+        self.assertEqual(info.CM, 8)
+        self.assertEqual(info.FLG, 0b00001000)
+        self.assertEqual(info.MTIME, int(os.path.getmtime(self.TEST_FILE)))
+        self.assertEqual(info.XFL, 0)
+        self.assertEqual(info.FNAME, os.path.basename(self.TEST_FILE))
+
+    def test_write_contents(self):
+        rawio = io.BytesIO()
+
+        gzip_writable = GzipFile(rawio, mode="w")
+        gzip_writable.addfile(self.TEST_FILE)
+
+        rawio.seek(0)
+
+        gzip_readable = GzipFile(rawio, mode="r")
+        gzip_readable._load()
+
+        extr = gzip_readable.extract(os.path.basename(self.TEST_FILE))
+        orig = open(self.TEST_FILE, "rb")
+
+        self.assertEqual(extr.read(), orig.read())
+        
 if __name__ == "__main__":
     unittest.main()
