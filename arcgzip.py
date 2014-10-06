@@ -168,6 +168,9 @@ class GzipFile:
         self.closed = False
         self.gzipinfos = []
 
+        if mode == 'r':
+            self._load()
+
     def __enter__(self):
         return self
 
@@ -184,9 +187,6 @@ class GzipFile:
         fileobj = open(filename, mode+'b')
         obj = cls(fileobj, mode=mode)
 
-        if mode == 'r':
-            obj._load()
-            
         return obj
 
     def _load(self):
