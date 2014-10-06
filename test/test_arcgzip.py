@@ -49,7 +49,6 @@ class TestWriteGzip(unittest.TestCase):
         rawio.seek(0)
 
         gzip_readable = GzipFile(rawio, mode="r")
-        gzip_readable._load()
 
         info =  gzip_readable.gzipinfos[0]
     
@@ -68,7 +67,6 @@ class TestWriteGzip(unittest.TestCase):
         rawio.seek(0)
 
         gzip_readable = GzipFile(rawio, mode="r")
-        gzip_readable._load()
 
         extr = gzip_readable.extract(os.path.basename(self.TEST_FILE))
         orig = open(self.TEST_FILE, "rb")
