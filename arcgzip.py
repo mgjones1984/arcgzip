@@ -41,8 +41,8 @@ class GzipError(Exception):
 #--------------------
 # Utility functions
 #--------------------
-def _read_str(fp):
-    """Read a zero terminated string"""
+def _read_to_zero(fp):
+    """Read a zero terminated byte sequence"""
     res = b''
 
     while True:
@@ -104,10 +104,10 @@ class GzipInfo:
             obj.EXFIELD = gzipfile.read(XLEN)
 
         if obj.FLG & FNAME:
-            obj.FNAME = _read_str(gzipfile).decode(FIELD_ENCODING)
+            obj.FNAME = _read_to_zero(gzipfile).decode(FIELD_ENCODING)
        
         if obj.FLG & FCOMMENT:
-            obj.FCOMMENT = _read_str(gzipfile).decode(FIELD_ENCODING)
+            obj.FCOMMENT = _read_to_zero(gzipfile).decode(FIELD_ENCODING)
 
         if obj.FLG & FHCRC:
             obj.CRC16 = struct.unpack('<H', obj.fp.read(2))
