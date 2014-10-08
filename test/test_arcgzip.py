@@ -37,6 +37,23 @@ class TestReadGzip(unittest.TestCase):
             fp = gzip.extract(self.FILE_ATTR["FNAME"])
             self.assertEqual(fp.read(), self.FILE_CONTENTS)
 
+    def test_extract_file(self):
+        tmpdir = None
+        try:
+            tmpdir = tempfile.mkdtemp()
+            os.chdir(tmpdir)
+
+            with GzipFile.open(self.TEST_FILE) as gzip:
+                filename = self.FILE_ATTR["FNAME"]
+
+                gzip.extractfile(filename)
+                mtime = os.path.getmtime(filename)
+
+                self.assertEqual(mtime, self.FILE_ATTR["MTIME"])
+        finally:
+            if tmpdir:
+                shutil.rmtree(tmpdir)
+
 class TestWriteGzip(unittest.TestCase):
     ## TEST SETTINGS
     TEST_FILE = os.path.join(DATA_DIR, "test.txt")
@@ -74,6 +91,6 @@ class TestWriteGzip(unittest.TestCase):
 
             fp = gzip.extract("test.txt")
             self.assertEqual(fp.read(), orig.read())
-        
+
 if __name__ == "__main__":
     unittest.main()
