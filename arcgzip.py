@@ -47,7 +47,9 @@ def _read_to_zero(fp):
 
     while True:
         c = fp.read(1)
-        if c == b'\x00':
+        if not c:
+            return None # Reach EOF before end of string
+        elif c == b'\x00':
             break
         res += c
 
@@ -104,10 +106,16 @@ class GzipInfo:
             obj.EXFIELD = gzipfile.read(XLEN)
 
         if obj.FLG & FNAME:
-            obj.FNAME = _read_to_zero(gzipfile).decode(FIELD_ENCODING)
+            bs = _read_to_zero(gzipfile)
+            if not bs:
+                raise GzipError('could not read the name of file')
+            obj.FNAME = bs.decode(FIELD_ENCODING)
        
         if obj.FLG & FCOMMENT:
-            obj.FCOMMENT = _read_to_zero(gzipfile).decode(FIELD_ENCODING)
+            bs = _read_to_zero(gzipfile)
+            if not bs:
+                raise GzipError('could not read the file comment')
+            obj.FCOMMENT = bs.decode(FIELD_ENCODING)
 
         if obj.FLG & FHCRC:
             obj.CRC16 = struct.unpack('<H', obj.fp.read(2))
