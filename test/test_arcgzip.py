@@ -45,11 +45,11 @@ class TestReadGzip(unittest.TestCase):
 
             with GzipFile.open(self.TEST_FILE) as gzip:
                 filename = self.FILE_ATTR["FNAME"]
-
                 gzip.extractfile(filename)
-                mtime = os.path.getmtime(filename)
 
-                self.assertEqual(mtime, self.FILE_ATTR["MTIME"])
+                stat = os.stat(filename)
+                self.assertEqual(stat.st_mtime, self.FILE_ATTR["MTIME"])
+                self.assertEqual(stat.st_size, len(self.FILE_CONTENTS))
         finally:
             if tmpdir:
                 shutil.rmtree(tmpdir)
