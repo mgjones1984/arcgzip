@@ -107,13 +107,13 @@ class GzipInfo:
 
         if obj.FLG & FNAME:
             bs = _read_to_zero(gzipfile)
-            if not bs:
+            if bs is None:
                 raise GzipError('could not read the name of file')
             obj.FNAME = bs.decode(FIELD_ENCODING)
        
         if obj.FLG & FCOMMENT:
             bs = _read_to_zero(gzipfile)
-            if not bs:
+            if bs is None:
                 raise GzipError('could not read the file comment')
             obj.FCOMMENT = bs.decode(FIELD_ENCODING)
 
