@@ -186,8 +186,12 @@ class GzipFile:
         self.closed = False
         self.gzipinfos = []
 
-        if mode == 'r':
-            self._load()
+        try:
+            if mode == 'r':
+                    self._load()
+        except:
+            fileobj.close()
+            raise
 
     def __enter__(self):
         return self
