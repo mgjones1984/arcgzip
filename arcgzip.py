@@ -45,6 +45,9 @@ class EmptyHeader(GzipError):
 class BadMagicNumber(GzipError):
     """ Exception for invalid header magic bytes """
 
+class BadChecksum(GzipError):
+    """ Exception for bad checksum"""
+
 #--------------------
 # Utility functions
 #--------------------
@@ -132,14 +135,26 @@ class GzipInfo:
         obj._data_offset = gzipfile.tell()
         decoder = zlib.decompressobj(-zlib.MAX_WBITS)
 
+        crc32, isize = 0, 0
         while True:
-            decoder.decompress(gzipfile.read(BUFSIZE))
+            data = decoder.decompress(gzipfile.read(BUFSIZE))
+
+            crc32 = zlib.crc32(data, crc32)
+            isize = (isize + len(data)) % 4294967296 # mod 2**32
+
             if decoder.unused_data != b'':
                 gzipfile.seek(-len(decoder.unused_data), 1)
                 break
 
+        data = decoder.flush()
+        crc32 = zlib.crc32(data, crc32) & 0xffffffff
+        isize = (isize + len(data)) % 4294967296 # mod 2**32
+
         ## Read the footer
         obj.CRC32, obj.ISIZE = struct.unpack(FOOTER_FORMAT, gzipfile.read(FOOTER_SIZE))
+
+        if crc32 != obj.CRC32 or isize != obj.ISIZE:
+            raise BadChecksum("bad checksum - crc32: {}/{} isize: {}/{}".format(crc32, obj.CRC32, isize, obj.ISIZE))
 
         return obj
 
