@@ -188,7 +188,7 @@ class GzipFile:
 
         try:
             if mode == 'r':
-                    self._load()
+                self._load()
         except:
             fileobj.close()
             raise
