@@ -3,7 +3,7 @@ import os
 import io
 import tempfile
 import shutil
-from arcgzip import GzipFile, GzipInfo
+from arcgzip import GzipFile, GzipInfo, GzipError
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
@@ -57,6 +57,7 @@ class TestReadGzip(unittest.TestCase):
 class TestReadInvalidFiles(unittest.TestCase):
     EMPTY_FILE = os.path.join(DATA_DIR, "emptyfile.gz")
     EXBYTES_FILE =  os.path.join(DATA_DIR, "extrabytes.gz")
+    EXMAGIC_FILE =  os.path.join(DATA_DIR, "extramagic.gz")
 
     def test_read_emptyfile(self):
         with self.assertRaises(IOError):
@@ -67,6 +68,12 @@ class TestReadInvalidFiles(unittest.TestCase):
         """ Test case for files with trailing garbage bytes """
         with GzipFile.open(self.EXBYTES_FILE) as gzip:
             self.assertEqual(len(gzip.gzipinfos), 1)
+
+    def test_extra_magic(self):
+        """ Special case in which trailing bytes are magic numbers"""
+        with self.assertRaises(GzipError):
+            with GzipFile.open(self.EXMAGIC_FILE) as gzip:
+                pass
 
 class TestWriteGzip(unittest.TestCase):
     ## TEST SETTINGS
