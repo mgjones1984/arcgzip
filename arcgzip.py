@@ -217,7 +217,7 @@ class GzipFile:
 
     ### Methods to get meta data of the gzip file
     def getinfo(self, filename):
-        """Search a member by filename. Return GzipInfo object (if found)"""
+        """Search a member by filename. Return GzipInfo object."""
 
         if self.mode != 'r':
             raise IOError('file not open for reading')
