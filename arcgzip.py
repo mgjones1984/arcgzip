@@ -89,14 +89,15 @@ class GzipInfo:
         buf = gzipfile.read(HEADER_SIZE)
 
         if not buf:
-            return None
-        elif len(buf) < HEADER_SIZE:
+            raise EmptyHeader('empty header')
+
+        if buf[:2] != GZIPID:
+            raise BadMagicNumber('magic header is not present')
+
+        if len(buf) < HEADER_SIZE:
             raise GzipError('file header truncated')
 
         unpack = struct.unpack(HEADER_FORMAT, buf)
-
-        if unpack[0] != GZIPID:
-            raise GzipError('invalid file signature for gzip: {}'.format(unpack[0]))
 
         obj.CM, obj.FLG, obj.MTIME, obj.XFL, obj.OS = unpack[1:]
 
@@ -211,9 +212,16 @@ class GzipFile:
         self.gzipinfos = []
 
         while True:
-            info = GzipInfo.fromgzipfile(self.fileobj)
-            if not info:
-                break
+            try:
+                info = GzipInfo.fromgzipfile(self.fileobj)
+            except EmptyHeader:
+                if self.gzipinfos:
+                    break
+                raise IOError('file is empty')
+            except BadMagicNumber as e:
+                if self.gzipinfos:
+                    break
+                raise IOError('file is not gzip format')
             self.gzipinfos.append(info)
 
     def close(self):
