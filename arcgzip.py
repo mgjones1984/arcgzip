@@ -4,6 +4,7 @@
 
 from __future__ import print_function
 import struct
+import logging
 import zlib
 import io
 import time
@@ -224,6 +225,7 @@ class GzipFile:
                 raise IOError('file is empty')
             except BadMagicNumber as e:
                 if self.gzipinfos:
+                    logging.warning('trailing garbage bytes ignored')
                     break
                 raise IOError('file is not gzip format')
             self.gzipinfos.append(info)
@@ -345,6 +347,8 @@ def usage():
 def main():
     import getopt
     
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
     try: 
         from __builtin__ import raw_input as _input # python2.x compatibility
     except ImportError:
