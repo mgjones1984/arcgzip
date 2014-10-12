@@ -38,6 +38,12 @@ FIELD_ENCODING = 'latin-1' # [RFC-1952] FNAME and FCOMMENT must consist of ISO-8
 class GzipError(Exception):
     """ Base Exception """
 
+class EmptyHeader(GzipError):
+    """ Exception for empty header """
+
+class BadMagicNumber(GzipError):
+    """ Exception for invalid header magic bytes """
+
 #--------------------
 # Utility functions
 #--------------------
