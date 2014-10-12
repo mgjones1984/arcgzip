@@ -54,6 +54,14 @@ class TestReadGzip(unittest.TestCase):
             if tmpdir:
                 shutil.rmtree(tmpdir)
 
+class TestReadInvalidFiles(unittest.TestCase):
+    EMPTY_FILE = os.path.join(DATA_DIR, "emptyfile.gz")
+
+    def test_read_emptyfile(self):
+        with self.assertRaises(IOError):
+            with GzipFile.open(self.EMPTY_FILE) as gzip:
+                pass
+
 class TestWriteGzip(unittest.TestCase):
     ## TEST SETTINGS
     TEST_FILE = os.path.join(DATA_DIR, "test.txt")
