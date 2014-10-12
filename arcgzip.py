@@ -19,7 +19,7 @@ HEADER_SIZE = 10
 FOOTER_FORMAT = '<2I'
 FOOTER_SIZE = 8
 
-GZIPID = b'\x1f\x8b'
+GZIP_MAGIC = b'\x1f\x8b'
 
 FTEXT = 1
 FHCRC = 2
@@ -91,7 +91,7 @@ class GzipInfo:
         if not buf:
             raise EmptyHeader('empty header')
 
-        if buf[:2] != GZIPID:
+        if buf[:2] != GZIP_MAGIC:
             raise BadMagicNumber('magic header is not present')
 
         if len(buf) < HEADER_SIZE:
@@ -159,7 +159,7 @@ class GzipInfo:
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
-        res += struct.pack(HEADER_FORMAT, GZIPID, self.CM, self.FLG, self.MTIME, self.XFL, self.OS)
+        res += struct.pack(HEADER_FORMAT, GZIP_MAGIC, self.CM, self.FLG, self.MTIME, self.XFL, self.OS)
  
         if self.FLG & FEXTRA:
             res += struct.pack('<H', self.XLEN)
