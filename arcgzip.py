@@ -395,6 +395,10 @@ def main():
                 if not os.path.exists(filename) or not os.path.isfile(filename):
                     logging.warning("'{}' is not a regular file".format(filename))
                     continue
+                elif os.path.samefile(args[0], filename):
+                    logging.warning("'{}' skipped".format(filename))
+                    continue
+
                 logging.info('adding: {}'.format(filename))
                 gzip.addfile(filename, compresslevel=compresslevel)
 
