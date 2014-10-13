@@ -29,9 +29,10 @@ FNAME = 8
 FCOMMENT = 16
 FRESERVED = 224
 
-BUFSIZE = 4096
+# [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
+FIELD_ENCODING = 'latin-1'
 
-FIELD_ENCODING = 'latin-1' # [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
+BUFSIZE = 1024 * 16
 
 TEMPLATE_FULL = """\
 ---
@@ -372,7 +373,8 @@ class GzipFile:
 # Entry Point
 #--------------------
 def usage():
-    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
+    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] '
+          '[-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
 def main():
     import getopt
