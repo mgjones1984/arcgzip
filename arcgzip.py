@@ -392,10 +392,10 @@ def main():
     if action == COMPRESS:
         with GzipFile.open(args[0], 'a') as gzip:
             for filename in args[1:]:
-                print('adding: {}'.format(filename), file=sys.stderr)
                 if not os.path.exists(filename) or not os.path.isfile(filename):
                     logging.warning("'{}' is not a regular file".format(filename))
                     continue
+                logging.info('adding: {}'.format(filename))
                 gzip.addfile(filename, compresslevel=compresslevel)
 
     elif action == DECOMPRESS:
@@ -409,7 +409,7 @@ def main():
                 if os.path.exists(filename):
                     if _input('{} exists. overwrite? [y/n]: '.format(filename)) != 'y':
                         continue
-                print('extracting: {}'.format(filename), file=sys.stderr)
+                logging.info('extracting: {}'.format(filename))
                 gzip.extractfile(filename)
 
     elif action == LIST:
