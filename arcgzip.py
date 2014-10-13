@@ -33,6 +33,21 @@ BUFSIZE = 4096
 
 FIELD_ENCODING = 'latin-1' # [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
 
+TEMPLATE_FULL = """\
+---
+method:   {CM}
+flg:      {FLG}
+mtime:    {MTIME}
+xfl:      {XFL}
+os:       {OS}
+exfield:  {EXFIELD}
+filename: {FNAME}
+comments: {FCOMMENT}
+crc16:    {CRC16}
+crc32:    {CRC32}
+isize:    {ISIZE}
+---"""
+
 #--------------------
 # Exception
 #--------------------
@@ -419,7 +434,7 @@ def main():
     elif action == LIST:
         with GzipFile.open(args[0]) as gzip:
             for info in gzip.getinfolist():
-                print("'{}' <{}>".format(info.FNAME, time.ctime(info.MTIME)))
+                print(TEMPLATE_FULL.format(**info.__dict__))
 
 if __name__ == '__main__':
     main()
