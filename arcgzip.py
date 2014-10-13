@@ -393,6 +393,9 @@ def main():
         with GzipFile.open(args[0], 'a') as gzip:
             for filename in args[1:]:
                 print('adding: {}'.format(filename), file=sys.stderr)
+                if not os.path.exists(filename) or not os.path.isfile(filename):
+                    logging.warning("'{}' is not a regular file".format(filename))
+                    continue
                 gzip.addfile(filename, compresslevel=compresslevel)
 
     elif action == DECOMPRESS:
