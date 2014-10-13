@@ -372,7 +372,7 @@ class GzipFile:
 # Entry Point
 #--------------------
 def usage():
-    print('usage: arcgzip.py [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
+    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] [-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
 def main():
     import getopt
@@ -385,13 +385,20 @@ def main():
         _input = input
 
     COMPRESS, DECOMPRESS, LIST = 1, 2, 3
-    action = COMPRESS
+    action = LIST
+    mode = None
     compresslevel = 6
 
     # Parameter processing
-    opts, args = getopt.getopt(sys.argv[1:], 'dlh', ('decompress', 'list', 'help'))
+    opts, args = getopt.getopt(sys.argv[1:], 'acdlh', ('append', 'create', 'decompress', 'list', 'help'))
     for k,v in opts:
-        if k == '-d' or k == '--decompress':
+        if k == '-a' or k == '--append':
+            action = COMPRESS
+            mode = 'a'
+        elif k == '-c' or k == '--create':
+            action = COMPRESS
+            mode = 'w'
+        elif k == '-d' or k == '--decompress':
             action = DECOMPRESS
         elif k == '-l' or k == '--list':
             action = LIST
@@ -405,7 +412,7 @@ def main():
 
     # Main
     if action == COMPRESS:
-        with GzipFile.open(args[0], 'a') as gzip:
+        with GzipFile.open(args[0], mode=mode) as gzip:
             for filename in args[1:]:
                 if not os.path.exists(filename) or not os.path.isfile(filename):
                     logging.warning("'{}' is not a regular file".format(filename))
