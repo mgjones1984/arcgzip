@@ -3,6 +3,7 @@ from distutils.core import setup
 setup(
     name="arcgzip",
     version="20141001",
+    py_modules=["arcgzip"],
     author="Seiji Fujimoto",
     author_email="fujimoto@writingarchives.sakura.ne.jp",
     url="https://github.com/fujimotos/arcgzip",
