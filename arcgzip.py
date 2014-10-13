@@ -69,7 +69,7 @@ def _read_to_zero(fp):
 # GzipInfo class
 #--------------------
 class GzipInfo:
-    def __init__(self, CM=8, FLG=0, MTIME=0, XFL=0, OS=255, EXFIELD=b'', FNAME='', FCOMMENT='', CRC16=0):
+    def __init__(self, CM=8, FLG=0, MTIME=0, XFL=0, OS=255, EXFIELD=None, FNAME=None, FCOMMENT=None, CRC16=None):
         self.CM = CM
         self.FLG = FLG
         self.MTIME = MTIME
