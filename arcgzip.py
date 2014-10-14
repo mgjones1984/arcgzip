@@ -187,16 +187,14 @@ class GzipInfo:
     @classmethod
     def fromfileobj(cls, fileobj):
         """Construct GzipInfo from a file object"""
-        obj = cls()
 
-        if hasattr(fileobj, 'name'):
-            obj.FLG= obj.XFL | FNAME
-            obj.FNAME = os.path.basename(fileobj.name)
-            obj.MTIME = int(os.path.getmtime(fileobj.name))
+        if hasattr(fileobj, 'name') and os.path.exists(fileobj.name):
+            info = cls.fromfilepath(fileobj.name)
         else:
-            obj.MTIME = int(time.time())
+            info = cls()
+            info.MTIME = int(time.time())
     
-        return obj
+        return info
 
     def tobuf(self):
         """Convert self to gzip header bytes"""
