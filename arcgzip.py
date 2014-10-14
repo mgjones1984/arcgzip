@@ -169,8 +169,10 @@ class GzipInfo:
         ## Read the footer
         obj.CRC32, obj.ISIZE = struct.unpack(FOOTER_FORMAT, gzipfile.read(FOOTER_SIZE))
 
-        if crc32 != obj.CRC32 or isize != obj.ISIZE:
-            raise BadChecksum("bad checksum - crc32: {}/{} isize: {}/{}".format(crc32, obj.CRC32, isize, obj.ISIZE))
+        if crc32 != obj.CRC32:
+            raise BadChecksum('invalid CRC32 checksum: {} != {}'.format(crc32, obj.CRC32))
+        elif isize != obj.ISIZE:
+            raise BadChecksum('incorrect file length: {} != {}'.format(isize, obj.ISIZE))
 
         return obj
 
