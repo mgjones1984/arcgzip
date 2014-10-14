@@ -175,6 +175,16 @@ class GzipInfo:
         return obj
 
     @classmethod
+    def fromfilepath(cls, filepath):
+        info = cls()
+
+        info.FLG = info.XFL | FNAME
+        info.FNAME = os.path.basename(filepath)
+        info.MTIME = int(os.path.getmtime(filepath))
+
+        return info
+
+    @classmethod
     def fromfileobj(cls, fileobj):
         """Construct GzipInfo from a file object"""
         obj = cls()
