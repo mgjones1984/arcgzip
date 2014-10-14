@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Read and write gzip archives."""
+"""Metadata-aware gzip archiver"""
 
 from __future__ import print_function
 import struct
