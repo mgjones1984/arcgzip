@@ -35,6 +35,9 @@ FIELD_ENCODING = 'latin-1'
 #--------------------
 # arcgzip constants
 #--------------------
+Z_BEST_SPEED = 1        # The compression level must be an integer
+Z_BEST_COMPRESSION = 9  # between 1 (fastest) and 9 (slowest).
+
 BUFSIZE = 1024 * 16
 
 TEMPLATE_FULL = """\
