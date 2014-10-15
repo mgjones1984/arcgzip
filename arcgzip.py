@@ -12,7 +12,7 @@ import os
 import sys
 
 #--------------------
-# Constants
+# gzip constants
 #--------------------
 HEADER_FORMAT = '<2sBBIBB'
 HEADER_SIZE = 10
@@ -32,6 +32,9 @@ FRESERVED = 224
 # [RFC-1952] FNAME and FCOMMENT must consist of ISO-885901 chars.
 FIELD_ENCODING = 'latin-1'
 
+#--------------------
+# arcgzip constants
+#--------------------
 BUFSIZE = 1024 * 16
 
 TEMPLATE_FULL = """\
@@ -50,7 +53,7 @@ isize:    {ISIZE}
 ---"""
 
 #--------------------
-# Exception
+# Exceptions
 #--------------------
 class GzipError(Exception):
     """ Base Exception """
