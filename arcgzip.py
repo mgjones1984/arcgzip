@@ -214,6 +214,20 @@ class GzipInfo:
             exflag = 4
         return exflag
 
+    @staticmethod
+    def getOS():
+        """Return the flag value which indicate the type
+           of operating system
+        """
+        os = 255 # unknown
+        if sys.platform.startswith('win32'):
+            os = 1
+        elif sys.platform.startswith('linux'):
+            os = 3
+        elif sys.platform.startswith('darwin'):
+            os = 7
+        return os
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
