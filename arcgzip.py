@@ -204,6 +204,16 @@ class GzipInfo:
     
         return info
 
+    @staticmethod
+    def getXFL_DEFLATE(compresslevel):
+        """Return the extra flag for DEFLATE compression"""
+        exflag = 0
+        if compresslevel == Z_BEST_COMPRESSION:
+            exflag = 2
+        elif compresslevel == Z_BEST_SPEED:
+            exflag = 4
+        return exflag
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
