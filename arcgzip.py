@@ -417,7 +417,7 @@ class GzipFile:
 #--------------------
 def usage():
     print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] '
-          '[-d/--decompress] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
+          '[-d/--decompress] [-L/--level <level>] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
 def main():
     import getopt
