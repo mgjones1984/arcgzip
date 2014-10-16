@@ -113,5 +113,25 @@ class TestWriteGzip(unittest.TestCase):
             fp = gzip.extract("test.txt")
             self.assertEqual(fp.read(), orig.read())
 
+    def test_best_compression(self):
+        filepath = os.path.join(self.tmpdir, "test.gz")
+
+        with GzipFile.open(filepath, mode="w") as gzip:
+            gzip.addfile(self.TEST_FILE, compresslevel=9)
+
+        with GzipFile.open(filepath, mode="r") as gzip:
+            info = gzip.getinfo("test.txt")
+            self.assertEqual(info.XFL, 2)
+
+    def test_best_speed(self):
+        filepath = os.path.join(self.tmpdir, "test.gz")
+
+        with GzipFile.open(filepath, mode="w") as gzip:
+            gzip.addfile(self.TEST_FILE, compresslevel=1)
+
+        with GzipFile.open(filepath, mode="r") as gzip:
+            info = gzip.getinfo("test.txt")
+            self.assertEqual(info.XFL, 4)
+
 if __name__ == "__main__":
     unittest.main()
