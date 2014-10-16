@@ -135,7 +135,7 @@ class GzipInfo:
 
         ## Read the extra header
         if obj.FLG & FEXTRA:
-            XLEN = struct.unpack('<H', obj.fp.read(2))
+            XLEN = struct.unpack('<H', gzipfile.read(2))[0]
             obj.EXFIELD = gzipfile.read(XLEN)
 
         if obj.FLG & FNAME:
