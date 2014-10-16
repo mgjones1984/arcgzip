@@ -435,7 +435,7 @@ def main():
     compresslevel = 6
 
     # Parameter processing
-    opts, args = getopt.getopt(sys.argv[1:], 'acdlh', ('append', 'create', 'decompress', 'list', 'help'))
+    opts, args = getopt.getopt(sys.argv[1:], 'acdlL:h', ('append', 'create', 'decompress', 'list', 'level=', 'help'))
     for k,v in opts:
         if k == '-a' or k == '--append':
             action = COMPRESS
@@ -447,6 +447,8 @@ def main():
             action = DECOMPRESS
         elif k == '-l' or k == '--list':
             action = LIST
+        elif k == '-L' or k == '--level':
+            compresslevel = int(v)
         elif k == '-h' or k == '--help':
             usage()
             sys.exit(0)
