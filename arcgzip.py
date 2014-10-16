@@ -337,6 +337,9 @@ class GzipFile:
         if gzipinfo == None:
             gzipinfo = GzipInfo.fromfileobj(fileobj)
 
+            gzipinfo.OS = GzipInfo.getOS()
+            gzipinfo.XFL = GzipInfo.getXFL_DEFLATE(compresslevel)
+
         self.fileobj.write(gzipinfo.tobuf())
 
         crc32, isize = 0, 0
