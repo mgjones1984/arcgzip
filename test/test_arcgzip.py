@@ -133,5 +133,16 @@ class TestWriteGzip(unittest.TestCase):
             info = gzip.getinfo("test.txt")
             self.assertEqual(info.XFL, 4)
 
+    def test_file_comment(self):
+        filepath = os.path.join(self.tmpdir, "test.gz")
+        comment = 'onion, shallot and garlic'
+
+        with GzipFile.open(filepath, mode="w") as gzip:
+            gzip.addfile(self.TEST_FILE, comment=comment)
+
+        with GzipFile.open(filepath, mode="r") as gzip:
+            info = gzip.getinfo("test.txt")
+            self.assertEqual(comment, info.FCOMMENT)
+
 if __name__ == "__main__":
     unittest.main()
