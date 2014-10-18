@@ -230,6 +230,10 @@ class GzipInfo:
 
         self.OS = flg
 
+    def set_file_comment(self, comment):
+        self.FLG = self.FLG | FCOMMENT
+        self.FCOMMENT = comment.encode(FIELD_ENCODING)
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
