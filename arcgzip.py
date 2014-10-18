@@ -449,7 +449,10 @@ def main():
     comment = None
 
     # Parameter processing
-    opts, args = getopt.getopt(sys.argv[1:], 'acdlL:C:h', ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'help'))
+    shortopts = 'acdlL:C:h'
+    longopts = ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'help')
+
+    opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
     for k,v in opts:
         if k == '-a' or k == '--append':
             action = COMPRESS
