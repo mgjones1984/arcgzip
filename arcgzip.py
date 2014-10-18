@@ -393,7 +393,7 @@ class GzipFile:
 
         return io.BytesIO(buff)
 
-    def addfile(self, filename, compresslevel=6):
+    def addfile(self, filename, compresslevel=6, comment=None):
         """Append the file (denoted by 'filename') to archive."""
 
         if self.mode not in ('w', 'a'):
@@ -402,6 +402,9 @@ class GzipFile:
         info = GzipInfo.fromfilepath(filename)
         info.set_operating_system()
         info.set_extra_flag(compresslevel)
+
+        if comment:
+            info.set_file_comment(comment)
 
         with open(filename, 'rb') as fileobj:
             self.add(fileobj, gzipinfo=info, compresslevel=compresslevel)
