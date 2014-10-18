@@ -446,9 +446,10 @@ def main():
     action = LIST
     mode = None
     compresslevel = 6
+    comment = None
 
     # Parameter processing
-    opts, args = getopt.getopt(sys.argv[1:], 'acdlL:h', ('append', 'create', 'decompress', 'list', 'level=', 'help'))
+    opts, args = getopt.getopt(sys.argv[1:], 'acdlL:C:h', ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'help'))
     for k,v in opts:
         if k == '-a' or k == '--append':
             action = COMPRESS
@@ -462,6 +463,8 @@ def main():
             action = LIST
         elif k == '-L' or k == '--level':
             compresslevel = int(v)
+        elif k == '-C' or k == '--comment':
+            comment = v
         elif k == '-h' or k == '--help':
             usage()
             sys.exit(0)
@@ -482,7 +485,7 @@ def main():
                     continue
 
                 logging.info('adding: {}'.format(filename))
-                gzip.addfile(filename, compresslevel=compresslevel)
+                gzip.addfile(filename, compresslevel=compresslevel, comment=comment)
 
     elif action == DECOMPRESS:
         with GzipFile.open(args[0]) as gzip:
