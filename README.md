@@ -13,3 +13,8 @@ Installation
 * Download the source code and run 'setup.py':
 
   $ python setup.py install
+
+TODO
+----
+
+* Support stream input.
