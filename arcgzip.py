@@ -399,8 +399,12 @@ class GzipFile:
         if self.mode not in ('w', 'a'):
             raise IOError('file not writible')
 
+        info = GzipInfo.fromfilepath(filename)
+        info.set_operating_system()
+        info.set_extra_flag(compresslevel)
+
         with open(filename, 'rb') as fileobj:
-            self.add(fileobj, compresslevel=compresslevel)
+            self.add(fileobj, gzipinfo=info, compresslevel=compresslevel)
 
     def extractfile(self, filename):
         """Extract the 'filename' to the current working directory."""
