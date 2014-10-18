@@ -204,29 +204,31 @@ class GzipInfo:
     
         return info
 
-    @staticmethod
-    def getXFL_DEFLATE(compresslevel):
-        """Return the extra flag for DEFLATE compression"""
-        exflag = 0
-        if compresslevel == Z_BEST_COMPRESSION:
-            exflag = 2
-        elif compresslevel == Z_BEST_SPEED:
-            exflag = 4
-        return exflag
-
-    @staticmethod
-    def getOS():
-        """Return the flag value which indicate the type
-           of operating system
+    def set_extra_flag(self, compresslevel):
+        """Set the extra flag assuming DEFLATE
+           compression is used.
         """
-        os = 255 # unknown
+        flg = 0
+        if compresslevel == Z_BEST_COMPRESSION:
+            flg = 2
+        elif compresslevel == Z_BEST_SPEED:
+            flg = 4
+
+        self.XFL = flg
+
+    def set_operating_system(self):
+        """Set the flag value which indicate the type
+           of the operating system.
+        """
+        flg = 255 # unknown operating system
         if sys.platform.startswith('win32'):
-            os = 1
+            flg = 0
         elif sys.platform.startswith('linux'):
-            os = 3
+            flg = 3
         elif sys.platform.startswith('darwin'):
-            os = 7
-        return os
+            flg = 7
+
+        self.OS = flg
 
     def tobuf(self):
         """Convert self to gzip header bytes"""
@@ -337,8 +339,8 @@ class GzipFile:
         if gzipinfo == None:
             gzipinfo = GzipInfo.fromfileobj(fileobj)
 
-            gzipinfo.OS = GzipInfo.getOS()
-            gzipinfo.XFL = GzipInfo.getXFL_DEFLATE(compresslevel)
+            gzipinfo.set_operating_system()
+            gzipinfo.set_extra_flag(compresslevel)
 
         self.fileobj.write(gzipinfo.tobuf())
 
