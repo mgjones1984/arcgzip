@@ -253,7 +253,8 @@ class GzipInfo:
         """Set the flag bit for CRC16 header checksum"""
 
         # Actual CRC16 value must be calculated right before writing
-        # to the output file to avoid the corruption of archive.
+        # to the output file (to avoid the corruption of the resulting 
+        # archive).
         self.FLG = self.FLG | FHCRC
 
     def tobuf(self):
