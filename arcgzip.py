@@ -240,6 +240,13 @@ class GzipInfo:
         self.FLG = self.FLG | FCOMMENT
         self.FCOMMENT = comment.encode(FIELD_ENCODING)
 
+    def set_crc16(self, comment):
+        """Set the flag bit for CRC16 header checksum"""
+
+        # Actual CRC16 value must be calculated right before writing
+        # to the output file to avoid the corruption of archive.
+        self.FLG = self.FLG | FHCRC
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
