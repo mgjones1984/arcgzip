@@ -250,7 +250,8 @@ class GzipInfo:
             res += self.FCOMMENT.encode(FIELD_ENCODING) + b'\x00'
 
         if self.FLG & FHCRC:
-            res += struct.pack('<H', self.CRC16)
+            crc16 = (zlib.crc32(res) & 0xffffffff) % 65536
+            res += struct.pack('<H', crc16)
 
         return res
 
