@@ -144,5 +144,16 @@ class TestWriteGzip(unittest.TestCase):
             info = gzip.getinfo("test.txt")
             self.assertEqual(comment, info.FCOMMENT)
 
+    def test_crc16(self):
+        filepath = os.path.join(self.tmpdir, "test.gz")
+
+        with GzipFile.open(filepath, mode="w") as gzip:
+            gzip.addfile(self.TEST_FILE, crc16=True)
+
+        with GzipFile.open(filepath, mode="r") as gzip:
+            info = gzip.getinfo("test.txt")
+            self.assertIsNotNone(info.CRC16)
+
+
 if __name__ == "__main__":
     unittest.main()
