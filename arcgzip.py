@@ -100,7 +100,10 @@ class GzipInfo:
         self.EXFIELD = EXFIELD
         self.FNAME = FNAME
         self.FCOMMENT = FCOMMENT
+
         self.CRC16 = None
+        self.CRC32 = None
+        self.ISIZE = None
 
     def __repr__(self):
         return '<GzipInfo FLG={}, MTIME={}, XFL={}, OS={}, EXFIELD={}, FNAME={}, FCOMMENT={}>'.format(
