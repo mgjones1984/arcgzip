@@ -407,7 +407,7 @@ class GzipFile:
 
         return io.BytesIO(buff)
 
-    def addfile(self, filename, compresslevel=6, comment=None):
+    def addfile(self, filename, compresslevel=6, comment=None, crc16=False):
         """Append the file (denoted by 'filename') to archive."""
 
         if self.mode not in ('w', 'a'):
@@ -419,6 +419,9 @@ class GzipFile:
 
         if comment:
             info.set_file_comment(comment)
+
+        if crc16:
+            info.set_crc16()
 
         with open(filename, 'rb') as fileobj:
             self.add(fileobj, gzipinfo=info, compresslevel=compresslevel)
