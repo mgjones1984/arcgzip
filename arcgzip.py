@@ -103,8 +103,8 @@ class GzipInfo:
         self.CRC16 = None
 
     def __repr__(self):
-        return '<GzipInfo FLG={}, MTIME={}, XFL={}, OS={}, EXFIELD={}, FNAME={}, FCOMMENT={}, CRC16={}'.format(
-                    self.FLG, self.MTIME, self.XFL, self.OS, self.EXFIELD, self.FNAME, self.FCOMMENT, self.CRC16)
+        return '<GzipInfo FLG={}, MTIME={}, XFL={}, OS={}, EXFIELD={}, FNAME={}, FCOMMENT={}>'.format(
+                    self.FLG, self.MTIME, self.XFL, self.OS, self.EXFIELD, self.FNAME, self.FCOMMENT)
 
     @classmethod
     def fromgzipfile(cls, gzipfile):
