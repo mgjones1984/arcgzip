@@ -137,24 +137,33 @@ class GzipInfo:
             raise GzipError('reserved bits are non-zero: {}'.format(obj.FLG))
 
         ## Read the extra header
+        exbuf = b''
         if obj.FLG & FEXTRA:
-            XLEN = struct.unpack('<H', gzipfile.read(2))[0]
-            obj.EXFIELD = gzipfile.read(XLEN)
+            XLEN = gzipfile.read(2)
+            obj.EXFIELD = gzipfile.read(struct.unpack('<H', XLEN)[0])
+
+            exbuf += (XLEN + obj.EXFIELD)
 
         if obj.FLG & FNAME:
             bs = _read_to_zero(gzipfile)
             if bs is None:
                 raise GzipError('could not read the name of file')
+            exbuf += bs + b'\0'
             obj.FNAME = bs.decode(FIELD_ENCODING)
        
         if obj.FLG & FCOMMENT:
             bs = _read_to_zero(gzipfile)
             if bs is None:
                 raise GzipError('could not read the file comment')
+            exbuf += bs + b'\0'
             obj.FCOMMENT = bs.decode(FIELD_ENCODING)
 
         if obj.FLG & FHCRC:
             obj.CRC16 = struct.unpack('<H', gzipfile.read(2))[0]
+
+            crc16 = (zlib.crc32(buf+exbuf) & 0xffffffff) % 65536
+            if crc16 != obj.CRC16:
+                raise BadChecksum('invalid CRC16 checksum: {} != {}'.format(crc16, obj.CRC16))
 
         ## Skip the body part
         obj._data_offset = gzipfile.tell()
