@@ -91,7 +91,7 @@ def _read_to_zero(fp):
 # GzipInfo class
 #--------------------
 class GzipInfo:
-    def __init__(self, CM=8, FLG=0, MTIME=0, XFL=0, OS=255, EXFIELD=None, FNAME=None, FCOMMENT=None, CRC16=None):
+    def __init__(self, CM=8, FLG=0, MTIME=0, XFL=0, OS=255, EXFIELD=None, FNAME=None, FCOMMENT=None):
         self.CM = CM
         self.FLG = FLG
         self.MTIME = MTIME
@@ -100,7 +100,7 @@ class GzipInfo:
         self.EXFIELD = EXFIELD
         self.FNAME = FNAME
         self.FCOMMENT = FCOMMENT
-        self.CRC16 = CRC16
+        self.CRC16 = None
 
     def __repr__(self):
         return '<GzipInfo FLG={}, MTIME={}, XFL={}, OS={}, EXFIELD={}, FNAME={}, FCOMMENT={}, CRC16={}'.format(
