@@ -234,6 +234,9 @@ class GzipInfo:
         self.OS = flg
 
     def set_file_comment(self, comment):
+        """Set the file comment and activate the corresponding
+           flag bit.
+        """
         self.FLG = self.FLG | FCOMMENT
         self.FCOMMENT = comment.encode(FIELD_ENCODING)
 
