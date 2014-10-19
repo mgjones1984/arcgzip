@@ -151,7 +151,7 @@ class GzipInfo:
             obj.FCOMMENT = bs.decode(FIELD_ENCODING)
 
         if obj.FLG & FHCRC:
-            obj.CRC16 = struct.unpack('<H', obj.fp.read(2))
+            obj.CRC16 = struct.unpack('<H', gzipfile.read(2))[0]
 
         ## Skip the body part
         obj._data_offset = gzipfile.tell()
