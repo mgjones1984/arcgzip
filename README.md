@@ -1,10 +1,13 @@
 arcgzip
 =======
 
-arcgzip.py is an experimental library to read and write gzip format files.
-Its main advantages over the stdlib *gzip* module is the more comprehensive
-extraction of metadata and the ability of handling multiple files in a single
-gzip archive.
+arcgzip.py is an alternative python library for gzip, of which focus
+is on the full support of gzip metadata.
+
+Specifically, this library enable you to ...
+
+* extract all of the meta information defined in [RFC 1952](http://www.gzip.org/zlib/rfc-gzip.html)
+* create an archive with the fine-tuned hearder data.
 
 Installation
 ------------
@@ -13,6 +16,7 @@ Installation
 * Download the source code and run 'setup.py':
 
   $ python setup.py install
+
 
 TODO
 ----
