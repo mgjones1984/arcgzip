@@ -474,10 +474,11 @@ def main():
     mode = None
     compresslevel = 6
     comment = None
+    crc16 = False
 
     # Parameter processing
     shortopts = 'acdlL:C:h'
-    longopts = ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'help')
+    longopts = ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
     for k,v in opts:
@@ -495,6 +496,8 @@ def main():
             compresslevel = int(v)
         elif k == '-C' or k == '--comment':
             comment = v
+        elif k == '--crc16':
+            crc16 = True
         elif k == '-h' or k == '--help':
             usage()
             sys.exit(0)
@@ -515,7 +518,7 @@ def main():
                     continue
 
                 logging.info('adding: {}'.format(filename))
-                gzip.addfile(filename, compresslevel=compresslevel, comment=comment)
+                gzip.addfile(filename, compresslevel=compresslevel, comment=comment, crc16=crc16)
 
     elif action == DECOMPRESS:
         with GzipFile.open(args[0]) as gzip:
