@@ -6,15 +6,7 @@ is on the full support of gzip metadata.
 
 Specifically, this library enables you to ...
 
-* extract all of the meta information defined in [RFC 1952](http://www.gzip.org/zlib/rfc-gzip.html):
-
-  1. Original file name
-  2. File comments
-  3. Last-modified time of the original file
-  4. Operating system on which the compression occured
-  5. All kinds of the checksum values (CRC16, CRC32 and ISIZE)
-  6. Extra field value, flags and etc.
-
+* extract all of the meta information defined in [RFC-1952](http://www.gzip.org/zlib/rfc-gzip.html).
 * create an archive with fine-tuned hearder data.
 
 Installation
@@ -24,6 +16,32 @@ Installation
 * Download the source code and run 'setup.py':
 
   $ python setup.py install
+
+
+Dive in
+-------
+
+###  (a) Show the metadata of an archive
+
+Running the installed module from the command line as follows:
+
+  python -m arcgzip --list datafile.gz
+
+This will give you an output like this:
+
+  ---
+  method:   8
+  flg:      8
+  mtime:    1412132400
+  xfl:      0
+  os:       3
+  exfield:  None
+  filename: test.txt
+  comments: None
+  crc16:    None
+  crc32:    1738832628
+  isize:    10
+  ---
 
 
 TODO
