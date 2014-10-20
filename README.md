@@ -15,7 +15,7 @@ Installation
 * Python 3.2 or later required (Python 2.7 is also supported)
 * Download the source code and run 'setup.py':
 
-  $ python setup.py install
+    $ python setup.py install
 
 
 Dive in
@@ -25,23 +25,23 @@ Dive in
 
 Running the installed module from the command line as follows:
 
-  python -m arcgzip --list datafile.gz
+    python -m arcgzip --list datafile.gz
 
 This will give you an output like this:
 
-  ---
-  method:   8
-  flg:      8
-  mtime:    1412132400
-  xfl:      0
-  os:       3
-  exfield:  None
-  filename: test.txt
-  comments: None
-  crc16:    None
-  crc32:    1738832628
-  isize:    10
-  ---
+    ---
+    method:   8
+    flg:      8
+    mtime:    1412132400
+    xfl:      0
+    os:       3
+    exfield:  None
+    filename: test.txt
+    comments: None
+    crc16:    None
+    crc32:    1738832628
+    isize:    10
+    ---
 
 
 TODO
