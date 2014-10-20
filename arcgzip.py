@@ -456,8 +456,8 @@ class GzipFile:
 # Entry Point
 #--------------------
 def usage():
-    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] '
-          '[-d/--decompress] [-L/--level <level>] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
+    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] [-d/--decompress]'
+          '[-L/--level <level>] [--C/--comment <comment>] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
 
 def main():
     import getopt
