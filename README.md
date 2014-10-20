@@ -18,10 +18,10 @@ Installation
     $ python setup.py install
 
 
-Dive in
--------
+Usage
+-----
 
-###  (a) Show the metadata of an archive
+### List all of the metadata within an archive
 
 Running the installed module from the command line as follows:
 
