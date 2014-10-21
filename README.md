@@ -1,7 +1,7 @@
 arcgzip
 =======
 
-arcgzip.py is an alternative python library for gzip, of which focus
+arcgzip.py is an alternative gzip library for python, of which focus
 is on the full support of gzip metadata.
 
 Specifically, this library enables you to ...
@@ -23,9 +23,9 @@ Usage
 
 ### List all of the metadata within an archive
 
-Running the installed module from the command line as follows:
+Run the module from the command line as follows:
 
-    python -m arcgzip --list datafile.gz
+    $ python -m arcgzip --list archive.gz
 
 This will give you an output like this:
 
