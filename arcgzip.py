@@ -247,7 +247,7 @@ class GzipInfo:
            flag bit.
         """
         self.FLG = self.FLG | FCOMMENT
-        self.FCOMMENT = comment.encode(FIELD_ENCODING)
+        self.FCOMMENT = comment
 
     def set_crc16(self):
         """Set the flag bit for CRC16 header checksum"""
