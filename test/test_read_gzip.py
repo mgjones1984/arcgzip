@@ -7,7 +7,6 @@ from arcgzip import GzipFile, GzipInfo, GzipError
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 class TestReadGzip(unittest.TestCase):
-    ## TEST SETTINGS
     TEST_FILE = os.path.join(DATA_DIR, "textfile.gz")
     FILE_ATTR = {
         "CM": 8,             # DEFLATE
@@ -19,7 +18,6 @@ class TestReadGzip(unittest.TestCase):
     }
     FILE_CONTENTS = b"asparagus\n"
 
-    ## Test cases
     def test_load_file(self):
         with GzipFile.open(self.TEST_FILE) as gzip:
             self.assertEqual(len(gzip.gzipinfos), 1)

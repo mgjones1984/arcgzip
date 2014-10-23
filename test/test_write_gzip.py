@@ -7,7 +7,6 @@ from arcgzip import GzipFile, GzipInfo, GzipError
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 class TestWriteGzip(unittest.TestCase):
-    ## TEST SETTINGS
     FILE_NAME = 'textfile'
     TEST_FILE = os.path.join(DATA_DIR, FILE_NAME)
 
@@ -17,7 +16,6 @@ class TestWriteGzip(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmpdir)
 
-    ## Test cases
     def test_write_attributes(self):
         filepath = os.path.join(self.tmpdir, "test.gz")
 
