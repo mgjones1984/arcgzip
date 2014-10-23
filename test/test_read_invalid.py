@@ -10,6 +10,7 @@ class TestReadInvalidFiles(unittest.TestCase):
     EXMAGIC_FILE =  os.path.join(DATA_DIR, "extramagic.gz")
     ISIZE_FILE =  os.path.join(DATA_DIR, "badisize.gz")
     CRC32_FILE =  os.path.join(DATA_DIR, "badcrc32.gz")
+    CRC16_FILE =  os.path.join(DATA_DIR, "badcrc16.gz")
 
     def test_read_emptyfile(self):
         with self.assertRaises(IOError):
@@ -35,6 +36,10 @@ class TestReadInvalidFiles(unittest.TestCase):
             with GzipFile.open(self.CRC32_FILE) as gzip:
                 pass
 
+    def test_bad_crc16(self):
+        with self.assertRaises(BadChecksum):
+            with GzipFile.open(self.CRC16_FILE) as gzip:
+                pass
 
 if __name__ == "__main__":
     unittest.main()
