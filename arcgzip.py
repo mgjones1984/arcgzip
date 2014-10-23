@@ -161,7 +161,7 @@ class GzipInfo:
         if obj.FLG & FHCRC:
             obj.CRC16 = struct.unpack('<H', gzipfile.read(2))[0]
 
-            crc16 = (zlib.crc32(buf+exbuf) & 0xffffffff) % 65536
+            crc16 = (zlib.crc32(buf+exbuf) & 0xffffffff) % 0x10000
             if crc16 != obj.CRC16:
                 raise BadChecksum('invalid CRC16 checksum: {} != {}'.format(crc16, obj.CRC16))
 
@@ -174,7 +174,7 @@ class GzipInfo:
             data = decoder.decompress(gzipfile.read(BUFSIZE))
 
             crc32 = zlib.crc32(data, crc32)
-            isize = (isize + len(data)) % 4294967296 # mod 2**32
+            isize = (isize + len(data)) % 0x100000000
 
             if decoder.unused_data != b'':
                 gzipfile.seek(-len(decoder.unused_data), 1)
@@ -182,7 +182,7 @@ class GzipInfo:
 
         data = decoder.flush()
         crc32 = zlib.crc32(data, crc32) & 0xffffffff
-        isize = (isize + len(data)) % 4294967296 # mod 2**32
+        isize = (isize + len(data)) % 0x100000000
 
         ## Read the footer
         obj.CRC32, obj.ISIZE = struct.unpack(FOOTER_FORMAT, gzipfile.read(FOOTER_SIZE))
@@ -380,7 +380,7 @@ class GzipFile:
             if data == b'':
                 break
             crc32 = zlib.crc32(data, crc32)
-            isize = (isize + len(data)) % 4294967296 # mod 2**32
+            isize = (isize + len(data)) % 0x100000000
             self.fileobj.write(encoder.compress(data))
         
         crc32 = crc32 & 0xffffffff
