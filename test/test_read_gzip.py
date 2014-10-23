@@ -8,14 +8,14 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 class TestReadGzip(unittest.TestCase):
     ## TEST SETTINGS
-    TEST_FILE = os.path.join(DATA_DIR, "test.txt.gz")
+    TEST_FILE = os.path.join(DATA_DIR, "textfile.gz")
     FILE_ATTR = {
         "CM": 8,             # DEFLATE
         "FLG": 0b00001000,   # FNAME flag
         "MTIME": 1412132400, # '2014/10/1 12:00:00'
         "XFL": 0,
         "OS": 3,             # UNIX
-        "FNAME": "test.txt"
+        "FNAME": "textfile"
     }
     FILE_CONTENTS = b"asparagus\n"
 
