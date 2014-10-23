@@ -105,6 +105,10 @@ class GzipInfo:
         self.CRC32 = None
         self.ISIZE = None
 
+        # The byte offset relative to the start of file.
+        # This property is meant to be used only internally.
+        self._data_offset = None
+
     def __repr__(self):
         return '<GzipInfo FLG={}, MTIME={}, XFL={}, OS={}, EXFIELD={}, FNAME={}, FCOMMENT={}>'.format(
                     self.FLG, self.MTIME, self.XFL, self.OS, self.EXFIELD, self.FNAME, self.FCOMMENT)
