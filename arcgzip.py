@@ -275,6 +275,12 @@ class GzipInfo:
         # archive).
         self.FLG = self.FLG | FHCRC
 
+    def set_ascii(self):
+        """Set the flag bit indicating that the content is
+           ASCII text.
+        """
+        self.FLG = self.FLG | FTEXT
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
@@ -434,7 +440,7 @@ class GzipFile:
 
     # Methods to manipulate the files on the current working
     # directory.
-    def addfile(self, filename, compresslevel=6, comment=None, crc16=False):
+    def addfile(self, filename, compresslevel=6, comment=None, crc16=False, isascii=False):
         """Append the file (denoted by 'filename') to archive."""
 
         if self.mode not in ('w', 'a'):
@@ -449,6 +455,9 @@ class GzipFile:
 
         if crc16:
             info.set_crc16()
+
+        if isascii:
+            info.set_ascii()
 
         with open(filename, 'rb') as fileobj:
             self.add(fileobj, gzipinfo=info, compresslevel=compresslevel)
