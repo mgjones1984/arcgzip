@@ -132,7 +132,7 @@ class GzipInfo:
         """Read a member from gzipfile. Return GzipInfo object"""
         obj = cls()
 
-        ## Read the header
+        # Read the header
         buf = gzipfile.read(HEADER_SIZE)
 
         if not buf:
@@ -154,7 +154,7 @@ class GzipInfo:
             # [RFC-1952] Reserved bits must be zero.
             raise GzipError('reserved bits are non-zero: {}'.format(obj.FLG))
 
-        ## Read the extra header
+        # Read the extra header
         exbuf = b''
         if obj.FLG & FEXTRA:
             XLEN = gzipfile.read(2)
@@ -183,7 +183,7 @@ class GzipInfo:
             if crc16 != obj.CRC16:
                 raise BadChecksum('invalid CRC16 checksum: {} != {}'.format(crc16, obj.CRC16))
 
-        ## Skip the body part
+        # Skip the body part
         obj._data_offset = gzipfile.tell()
         decoder = zlib.decompressobj(-zlib.MAX_WBITS)
 
@@ -202,7 +202,7 @@ class GzipInfo:
         crc32 = zlib.crc32(data, crc32) & 0xffffffff
         isize = (isize + len(data)) % 0x100000000
 
-        ## Read the footer
+        # Read the footer
         obj.CRC32, obj.ISIZE = struct.unpack(FOOTER_FORMAT, gzipfile.read(FOOTER_SIZE))
 
         if crc32 != obj.CRC32:
@@ -354,7 +354,6 @@ class GzipFile:
         self.closed = True
         self.fileobj.close()
 
-    ### Methods to get meta data of the gzip file
     def getinfo(self, filename):
         """Search a member by filename. Return GzipInfo object."""
 
@@ -375,7 +374,8 @@ class GzipFile:
 
         return self.gzipinfos
 
-    ### Methods to extract/Add file objects
+    # Methods to add/extract file object. The other gzip-manipulating
+    # methods are built on these functions.
     def add(self, fileobj, gzipinfo=None, compresslevel=6):
         """Append a file to the end of the archive."""
 
@@ -384,9 +384,6 @@ class GzipFile:
 
         if gzipinfo == None:
             gzipinfo = GzipInfo.fromfileobj(fileobj)
-
-            gzipinfo.set_operating_system()
-            gzipinfo.set_extra_flag(compresslevel)
 
         self.fileobj.write(gzipinfo.tobuf())
 
@@ -435,6 +432,8 @@ class GzipFile:
 
         return io.BytesIO(buff)
 
+    # Methods to manipulate the files on the current working
+    # directory.
     def addfile(self, filename, compresslevel=6, comment=None, crc16=False):
         """Append the file (denoted by 'filename') to archive."""
 
