@@ -94,6 +94,16 @@ class TestWriteGzip(unittest.TestCase):
             info = gzip.getinfo(self.FILE_NAME)
             self.assertTrue(info.FLG & FTEXT > 0)
 
+    def test_exfield(self):
+        filepath = os.path.join(self.tmpdir, 'test.gz')
+        exfield = b'cp\x02\x08\x00'
+
+        with GzipFile.open(filepath, mode='w') as gzip:
+            gzip.addfile(self.TEST_FILE, exfield=exfield)
+
+        with GzipFile.open(filepath, mode='r') as gzip:
+            info = gzip.getinfo(self.FILE_NAME)
+            self.assertEqual(exfield, info.EXFIELD)
 
 if __name__ == '__main__':
     unittest.main()
