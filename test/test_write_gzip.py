@@ -2,7 +2,7 @@ import unittest
 import os
 import tempfile
 import shutil
-from arcgzip import GzipFile, GzipInfo, GzipError
+from arcgzip import GzipFile, GzipInfo, GzipError, FTEXT
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -83,6 +83,17 @@ class TestWriteGzip(unittest.TestCase):
         with GzipFile.open(filepath, mode='r') as gzip:
             info = gzip.getinfo(self.FILE_NAME)
             self.assertIsNotNone(info.CRC16)
+
+    def test_ascii(self):
+        filepath = os.path.join(self.tmpdir, 'test.gz')
+
+        with GzipFile.open(filepath, mode='w') as gzip:
+            gzip.addfile(self.TEST_FILE, isascii=True)
+
+        with GzipFile.open(filepath, mode='r') as gzip:
+            info = gzip.getinfo(self.FILE_NAME)
+            self.assertTrue(info.FLG & FTEXT > 0)
+
 
 if __name__ == '__main__':
     unittest.main()
