@@ -1,13 +1,14 @@
 arcgzip
 =======
 
-arcgzip.py is an alternative gzip library for python, of which focus
-is on the full support of gzip metadata.
+arcgzip.py is an alternative python gzip library, of which focus is
+on the full support of gzip metadata.
 
 Specifically, this library enables you to ...
 
 * extract all of the meta information defined in [RFC-1952](http://www.gzip.org/zlib/rfc-gzip.html).
 * create an archive with fine-tuned hearder data.
+* handle multiple files in a single gzip archive.
 
 Installation
 ------------
@@ -17,32 +18,20 @@ Installation
 
     $ python setup.py install
 
+Command-line Usage
+------------------
 
-Usage
------
+    arcgzip.py -l archive.gz         - Show the list of contents.
+    arcgzip.py -a archive.gz targets - Add target files to the archive.
+    arcgzip.py -c archive.gz targets - Create a new archive from target files.
+    arcgzip.py -d archive.gz targets - Extract files from the archive,
 
-### List all of the metadata within an archive
+### Create/Append Options
 
-Run the module from the command line as follows:
-
-    $ python -m arcgzip --list archive.gz
-
-This will give you an output like this:
-
-    ---
-    method:   8
-    flg:      8
-    mtime:    1412132400
-    xfl:      0
-    os:       3
-    exfield:  None
-    filename: test.txt
-    comments: None
-    crc16:    None
-    crc32:    1738832628
-    isize:    10
-    ---
-
+    --ascii       - Set ASCII text flag.
+    --crc16       - Add crc16 checksum field to the header.
+    --comment [S] - Add file comments for the file.
+    --level [N]   - Compression level to be used (1-fastest/9-slowest)
 
 TODO
 ----
