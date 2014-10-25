@@ -476,7 +476,7 @@ class GzipFile:
 def main():
     import getopt
     
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+    logging.basicConfig(format='arcgzip: %(message)s', level=logging.INFO)
 
     try: 
         from __builtin__ import raw_input as _input # python2.x compatibility
