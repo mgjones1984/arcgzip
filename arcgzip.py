@@ -11,6 +11,7 @@ Command-line Usage:
 
 Create/Append Options:
 
+  --ascii       - Set ASCII text flag.
   --crc16       - Add crc16 checksum field to the header.
   --comment <S> - Add file comments for the file.
   --level <N>   - Compression level to be used (1-fastest/9-slowest)
@@ -496,10 +497,11 @@ def main():
     compresslevel = 6
     comment = None
     crc16 = False
+    isascii = False
 
     # Parameter processing
     shortopts = 'a:c:d:l:'
-    longopts = ('level=', 'comment=', 'crc16', 'help')
+    longopts = ('level=', 'comment=', 'ascii', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
     for key,val in opts:
@@ -521,6 +523,8 @@ def main():
             comment = val
         elif key == '--crc16':
             crc16 = True
+        elif key == '--ascii':
+            isascii = True
         elif key == '--help':
             print(__doc__, file=sys.stderr)
             sys.exit(0)
@@ -541,7 +545,7 @@ def main():
                     continue
 
                 logging.info('adding: {}'.format(filename))
-                gzip.addfile(filename, compresslevel=compresslevel, comment=comment, crc16=crc16)
+                gzip.addfile(filename, compresslevel=compresslevel, comment=comment, crc16=crc16, isascii=isascii)
 
     elif action == DECOMPRESS:
         with GzipFile.open(archive) as gzip:
