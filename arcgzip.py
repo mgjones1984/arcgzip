@@ -474,50 +474,51 @@ def main():
         _input = input
 
     COMPRESS, DECOMPRESS, LIST = 1, 2, 3
-    action = LIST
-    mode = None
+    action, archive, mode = None, None, None
     compresslevel = 6
     comment = None
     crc16 = False
 
     # Parameter processing
-    shortopts = 'acdlL:C:h'
-    longopts = ('append', 'create', 'decompress', 'list', 'level=', 'comment=', 'crc16', 'help')
+    shortopts = 'acdl'
+    longopts = ('level=', 'comment=', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
-    for k,v in opts:
-        if k == '-a' or k == '--append':
+    for key,val in opts:
+        if key == '-a':
             action = COMPRESS
-            mode = 'a'
-        elif k == '-c' or k == '--create':
+            archive, mode = val, 'a'
+        elif key == '-c':
             action = COMPRESS
-            mode = 'w'
-        elif k == '-d' or k == '--decompress':
+            archive, mode = val, 'w'
+        elif key == '-d':
             action = DECOMPRESS
-        elif k == '-l' or k == '--list':
+            archive = val
+        elif key == '-l':
             action = LIST
-        elif k == '-L' or k == '--level':
-            compresslevel = int(v)
-        elif k == '-C' or k == '--comment':
-            comment = v
-        elif k == '--crc16':
+            archive = val
+        elif key == '--level':
+            compresslevel = int(val)
+        elif key == '--comment':
+            comment = val
+        elif key == '--crc16':
             crc16 = True
-        elif k == '-h' or k == '--help':
+        elif key == '--help':
             usage()
             sys.exit(0)
 
-    if not args or (action == COMPRESS and len(args) < 2):
+    if not action or (action == COMPRESS and not args):
         usage()
         sys.exit(1)
 
     # Main
     if action == COMPRESS:
-        with GzipFile.open(args[0], mode=mode) as gzip:
-            for filename in args[1:]:
+        with GzipFile.open(archive, mode=mode) as gzip:
+            for filename in args:
                 if not os.path.exists(filename) or not os.path.isfile(filename):
                     logging.warning("'{}' is not a regular file".format(filename))
                     continue
-                elif os.path.samefile(args[0], filename):
+                elif os.path.samefile(archive, filename):
                     logging.warning("'{}' skipped".format(filename))
                     continue
 
@@ -525,9 +526,9 @@ def main():
                 gzip.addfile(filename, compresslevel=compresslevel, comment=comment, crc16=crc16)
 
     elif action == DECOMPRESS:
-        with GzipFile.open(args[0]) as gzip:
-            if len(args) > 1:
-                targets = args[1:]
+        with GzipFile.open(archive) as gzip:
+            if args:
+                targets = args
             else:
                 targets = set(info.FNAME for info in gzip.getinfolist() if info.FNAME)
 
@@ -539,7 +540,7 @@ def main():
                 gzip.extractfile(filename)
 
     elif action == LIST:
-        with GzipFile.open(args[0]) as gzip:
+        with GzipFile.open(archive) as gzip:
             for info in gzip.getinfolist():
                 print(TEMPLATE_FULL.format(**info.__dict__))
 
