@@ -1,6 +1,20 @@
 #!/usr/bin/env python
 
-"""Metadata-aware gzip archiver"""
+"""Metadata-aware gzip archiver
+
+Command-line Usage:
+
+  arcgzip.py -l archive.gz         - Show the list of contents.
+  arcgzip.py -a archive.gz targets - Add target files to the archive.
+  arcgzip.py -c archive.gz targets - Create a new archive from target files.
+  arcgzip.py -d archive.gz targets - Extract files from the archive,
+
+Create/Append Options:
+
+  --crc16       - Add crc16 checksum field to the header.
+  --comment <S> - Add file comments for the file.
+  --level <N>   - Compression level to be used (1-fastest/9-slowest)
+"""
 
 from __future__ import print_function
 import struct
@@ -459,10 +473,6 @@ class GzipFile:
 #--------------------
 # Entry Point
 #--------------------
-def usage():
-    print('usage: arcgzip.py [-a/--append] [-c/--create] [-l/--list] [-d/--decompress]'
-          '[-L/--level <level>] [--C/--comment <comment>] [-h/--help] <gzipfile> [<filenames>]', file=sys.stderr)
-
 def main():
     import getopt
     
@@ -504,11 +514,11 @@ def main():
         elif key == '--crc16':
             crc16 = True
         elif key == '--help':
-            usage()
+            print(__doc__, file=sys.stderr)
             sys.exit(0)
 
     if not action or (action == COMPRESS and not args):
-        usage()
+        print(__doc__, file=sys.stderr)
         sys.exit(1)
 
     # Main
