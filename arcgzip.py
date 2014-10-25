@@ -490,7 +490,7 @@ def main():
     crc16 = False
 
     # Parameter processing
-    shortopts = 'acdl'
+    shortopts = 'a:c:d:l:'
     longopts = ('level=', 'comment=', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
