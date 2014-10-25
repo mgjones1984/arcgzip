@@ -14,6 +14,7 @@ Create/Append Options:
   --ascii       - Set ASCII text flag.
   --crc16       - Add crc16 checksum field to the header.
   --comment <S> - Add file comments for the file.
+  --exfield <B> - Set the base64-encoded data to the extra field.
   --level <N>   - Compression level to be used (1-fastest/9-slowest)
 """
 
@@ -492,6 +493,7 @@ class GzipFile:
 #--------------------
 def main():
     import getopt
+    from base64 import b64decode
     
     logging.basicConfig(format='arcgzip: %(message)s', level=logging.INFO)
 
@@ -504,12 +506,13 @@ def main():
     action, archive, mode = None, None, None
     compresslevel = 6
     comment = None
+    exfield = None
     crc16 = False
     isascii = False
 
     # Parameter processing
     shortopts = 'a:c:d:l:'
-    longopts = ('level=', 'comment=', 'ascii', 'crc16', 'help')
+    longopts = ('level=', 'comment=', 'exfield=', 'ascii', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
     for key,val in opts:
@@ -529,6 +532,8 @@ def main():
             compresslevel = int(val)
         elif key == '--comment':
             comment = val
+        elif key == '--exfield':
+            exfield = b64decode(val)
         elif key == '--crc16':
             crc16 = True
         elif key == '--ascii':
@@ -553,7 +558,7 @@ def main():
                     continue
 
                 logging.info('adding: {}'.format(filename))
-                gzip.addfile(filename, compresslevel=compresslevel, comment=comment, crc16=crc16, isascii=isascii)
+                gzip.addfile(filename, compresslevel=compresslevel, exfield=exfield, comment=comment, crc16=crc16, isascii=isascii)
 
     elif action == DECOMPRESS:
         with GzipFile.open(archive) as gzip:
