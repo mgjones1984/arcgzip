@@ -282,13 +282,18 @@ class GzipInfo:
         """
         self.FLG = self.FLG | FTEXT
 
+    def set_exfield(self, exfield):
+        """Set the binary data to the extra field."""
+        self.FLG = self.FLG | FEXTRA
+        self.EXFIELD = exfield
+
     def tobuf(self):
         """Convert self to gzip header bytes"""
         res = b''
         res += struct.pack(HEADER_FORMAT, GZIP_MAGIC, self.CM, self.FLG, self.MTIME, self.XFL, self.OS)
  
         if self.FLG & FEXTRA:
-            res += struct.pack('<H', self.XLEN)
+            res += struct.pack('<H', len(self.EXFIELD))
             res += self.EXFIELD
 
         if self.FLG & FNAME:
@@ -441,7 +446,7 @@ class GzipFile:
 
     # Methods to manipulate the files on the current working
     # directory.
-    def addfile(self, filename, compresslevel=6, comment=None, crc16=False, isascii=False):
+    def addfile(self, filename, compresslevel=6, exfield=None, comment=None, crc16=False, isascii=False):
         """Append the file (denoted by 'filename') to archive."""
 
         if self.mode not in ('w', 'a'):
@@ -450,6 +455,9 @@ class GzipFile:
         info = GzipInfo.fromfilepath(filename)
         info.set_operating_system()
         info.set_extra_flag(compresslevel)
+
+        if exfield:
+            info.set_exfield(exfield)
 
         if comment:
             info.set_file_comment(comment)
