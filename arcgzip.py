@@ -244,8 +244,8 @@ class GzipInfo:
         self.FNAME = filename
 
     def set_extra_flag(self, compresslevel):
-        """Set the extra flag assuming DEFLATE
-           compression is used.
+        """Set the extra flag assuming DEFLATE compression
+           method is used.
         """
         flg = 0
         if compresslevel == Z_BEST_COMPRESSION:
@@ -454,7 +454,8 @@ class GzipFile:
 
     # Methods to manipulate the files on the current working
     # directory.
-    def addfile(self, filename, compresslevel=6, exfield=None, comment=None, crc16=False, isascii=False):
+    def addfile(self, filename, compresslevel=6, exfield=None, comment=None,
+                crc16=False, isascii=False):
         """Append the file (denoted by 'filename') to archive."""
 
         if self.mode not in ('w', 'a'):
