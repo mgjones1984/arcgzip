@@ -550,10 +550,12 @@ def main():
     exfield = None
     crc16 = False
     isascii = False
+    content = None
+    encoding = 'utf-8'
 
     # Parameter processing
     shortopts = 'a:c:d:l:'
-    longopts = ('level=', 'comment=', 'exfield=', 'ascii', 'crc16', 'help')
+    longopts = ('level=', 'comment=', 'content=', 'exfield=', 'encoding=', 'ascii', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
     for key,val in opts:
@@ -573,8 +575,12 @@ def main():
             compresslevel = int(val)
         elif key == '--comment':
             comment = val
+        elif key == '--content':
+            content = val
         elif key == '--exfield':
             exfield = b64decode(val)
+        elif key == '--encoding':
+            encoding = val
         elif key == '--crc16':
             crc16 = True
         elif key == '--ascii':
@@ -583,12 +589,12 @@ def main():
             print(__doc__, file=sys.stderr)
             sys.exit(0)
 
-    if not action or (action == COMPRESS and not args):
+    if not action or (action == COMPRESS and not (args or content)):
         print(__doc__, file=sys.stderr)
         sys.exit(1)
 
     # Main
-    if action == COMPRESS:
+    if action == COMPRESS and args:
         with GzipFile.open(archive, mode=mode) as gzip:
             for filename in args:
                 if not os.path.exists(filename) or not os.path.isfile(filename):
@@ -600,6 +606,11 @@ def main():
 
                 logging.info('adding: {}'.format(filename))
                 gzip.addfile(filename, compresslevel=compresslevel, exfield=exfield, comment=comment, crc16=crc16, isascii=isascii)
+
+    elif action == COMPRESS and content:
+        with GzipFile.open(archive, mode=mode) as gzip:
+            data = content.encode(encoding)
+            gzip.adddata(data, compresslevel=compresslevel, exfield=exfield, comment=comment, crc16=crc16, isascii=isascii)
 
     elif action == DECOMPRESS:
         with GzipFile.open(archive) as gzip:
