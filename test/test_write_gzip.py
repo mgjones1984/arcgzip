@@ -105,5 +105,23 @@ class TestWriteGzip(unittest.TestCase):
             info = gzip.getinfo(self.FILE_NAME)
             self.assertEqual(exfield, info.EXFIELD)
 
+    def test_write_data(self):
+        filepath = os.path.join(self.tmpdir, 'test.gz')
+        data = b'carrot, beet, radish and turnip'
+        mtime = 1412132400 # 2014-10-01 12:00:00
+        filename = 'roots_vagetables.txt'
+
+        with GzipFile.open(filepath, mode='w') as gzip:
+            gzip.adddata(data, mtime=mtime, filename=filename)
+
+        with GzipFile.open(filepath, mode='r') as gzip:
+            info = gzip.getinfo(filename)
+
+            self.assertEqual(mtime, info.MTIME)
+            self.assertEqual(filename, info.FNAME)
+
+            fp = gzip.extract(gzipinfo=info)
+            self.assertEqual(data, fp.read())
+
 if __name__ == '__main__':
     unittest.main()
