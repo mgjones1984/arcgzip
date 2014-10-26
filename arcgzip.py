@@ -236,6 +236,13 @@ class GzipInfo:
     
         return info
 
+    def set_filename(self, filename):
+        """Set the file name and activate the corresponding
+           flag bit.
+        """
+        self.FLG = self.FLG | FNAME
+        self.FNAME = filename
+
     def set_extra_flag(self, compresslevel):
         """Set the extra flag assuming DEFLATE
            compression is used.
@@ -487,6 +494,39 @@ class GzipFile:
             fw.write(self.extract(gzipinfo=info).read())
 
         os.utime(filename, (int(time.time()), info.MTIME))
+
+    def adddata(self, data, compresslevel=6, mtime=None, filename=None, exfield=None,
+                comment=None, crc16=False, isascii=False):
+        """Add binary data to the end of the archive"""
+
+        if self.mode not in ('w', 'a'):
+            raise IOError('file not writible')
+
+        info = GzipInfo()
+        info.set_operating_system()
+        info.set_extra_flag(compresslevel)
+
+        if mtime is not None:
+            info.MTIME = mtime
+        else:
+            info.MTIME = int(time.time())
+
+        if filename:
+            info.set_filename(filename)
+
+        if exfield:
+            info.set_exfield(exfield)
+
+        if comment:
+            info.set_file_comment(comment)
+
+        if crc16:
+            info.set_crc16()
+
+        if isascii:
+            info.set_ascii()
+
+        self.add(io.BytesIO(data), gzipinfo=info, compresslevel=compresslevel)
 
 #--------------------
 # Entry Point
