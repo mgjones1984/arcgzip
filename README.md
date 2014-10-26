@@ -31,9 +31,9 @@ Command-line Usage
     --ascii        - Set ASCII text flag.
     --crc16        - Add crc16 checksum field to the header.
     --comment [S]  - Add file comments for the file.
-    --content [S]  - Write string to the archive (instead of adding target files)
+    --content [S]  - Write the string to archive (instead of target files)
     --encoding [S] - Specify the encoding of the string (with --content)
-    --exfield <B>  - Set the base64-encoded data to the extra field.
+    --exfield [B]  - Set the base64-encoded data to the extra field.
     --level [N]    - Compression level to be used (1-fastest/9-slowest)
 
 TODO
