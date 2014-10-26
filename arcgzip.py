@@ -596,7 +596,13 @@ def main():
         sys.exit(1)
 
     # Main
-    if action == COMPRESS and args:
+    if action == COMPRESS and content:
+        with GzipFile.open(archive, mode=mode) as gzip:
+            data = content.encode(encoding)
+            gzip.adddata(data, compresslevel=compresslevel, exfield=exfield,
+                         comment=comment, crc16=crc16, isascii=isascii)
+
+    elif action == COMPRESS and args:
         with GzipFile.open(archive, mode=mode) as gzip:
             for filename in args:
                 if not os.path.exists(filename) or not os.path.isfile(filename):
@@ -607,12 +613,8 @@ def main():
                     continue
 
                 logging.info('adding: {}'.format(filename))
-                gzip.addfile(filename, compresslevel=compresslevel, exfield=exfield, comment=comment, crc16=crc16, isascii=isascii)
-
-    elif action == COMPRESS and content:
-        with GzipFile.open(archive, mode=mode) as gzip:
-            data = content.encode(encoding)
-            gzip.adddata(data, compresslevel=compresslevel, exfield=exfield, comment=comment, crc16=crc16, isascii=isascii)
+                gzip.addfile(filename, compresslevel=compresslevel, exfield=exfield,
+                             comment=comment, crc16=crc16, isascii=isascii)
 
     elif action == DECOMPRESS:
         with GzipFile.open(archive) as gzip:
