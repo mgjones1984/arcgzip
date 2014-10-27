@@ -426,7 +426,7 @@ class GzipFile:
         self.fileobj.write(struct.pack(FOOTER_FORMAT, crc32, isize))
 
     def extract(self, filename=None, gzipinfo=None):
-        """Extract a file from the archive. Return a file object."""
+        """Extract a file from the archive as a file object."""
 
         if self.mode != 'r':
             raise IOError('file not open for reading')
@@ -458,7 +458,9 @@ class GzipFile:
     # directory.
     def addfile(self, filepath, compresslevel=6, exfield=None, comment=None,
                 crc16=False, isascii=False):
-        """Append the file (denoted by 'filepath') to archive."""
+        """Write the contents of <filepath> to the archive with the specified
+           attributes.
+        """
 
         if self.mode not in ('w', 'a'):
             raise IOError('file not writible')
@@ -483,7 +485,7 @@ class GzipFile:
             self.add(fileobj, gzipinfo=info, compresslevel=compresslevel)
 
     def extractfile(self, filename):
-        """Extract the 'filename' to the current working directory."""
+        """Extract <filename> to the current working directory."""
 
         if self.mode != 'r':
             raise IOError('file not open for reading')
