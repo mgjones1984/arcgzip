@@ -18,6 +18,8 @@ class TestReadGzip(unittest.TestCase):
     }
     FILE_CONTENTS = b'asparagus\n'
 
+    MULTIPLE_FILE = os.path.join(DATA_DIR, 'multiple.gz')
+
     def test_load_file(self):
         with GzipFile.open(self.TEST_FILE) as gzip:
             self.assertEqual(len(gzip.gzipinfos), 1)
@@ -50,6 +52,11 @@ class TestReadGzip(unittest.TestCase):
         finally:
             if tmpdir:
                 shutil.rmtree(tmpdir)
+
+    def test_read_multiple(self):
+        with GzipFile.open(self.MULTIPLE_FILE) as gzip:
+            infos = gzip.getinfolist()
+            self.assertEqual(len(infos), 2)
 
 if __name__ == '__main__':
     unittest.main()
