@@ -404,7 +404,7 @@ class GzipFile:
         if self.mode not in ('w', 'a'):
             raise IOError('file not writible')
 
-        if gzipinfo == None:
+        if gzipinfo is None:
             gzipinfo = GzipInfo.fromfileobj(fileobj)
 
         self.fileobj.write(gzipinfo.tobuf())
@@ -434,7 +434,7 @@ class GzipFile:
         if filename:
             gzipinfo = self.getinfo(filename)
 
-        if gzipinfo == None or gzipinfo not in self.gzipinfos:
+        if gzipinfo is None or gzipinfo not in self.gzipinfos:
             raise ValueError('Nothing to extract')
 
         self.fileobj.seek(gzipinfo._data_offset)
