@@ -172,7 +172,7 @@ class GzipInfo:
                 raise GzipError('could not read the name of file')
             exbuf += bs + b'\0'
             obj.FNAME = bs.decode(FIELD_ENCODING)
-       
+
         if obj.FLG & FCOMMENT:
             bs = _read_to_zero(gzipfile)
             if bs is None:
@@ -235,7 +235,7 @@ class GzipInfo:
         else:
             info = cls()
             info.MTIME = int(time.time())
-    
+
         return info
 
     def set_filename(self, filename):
@@ -301,14 +301,14 @@ class GzipInfo:
         """Convert self to gzip header bytes"""
         res = b''
         res += struct.pack(HEADER_FORMAT, GZIP_MAGIC, self.CM, self.FLG, self.MTIME, self.XFL, self.OS)
- 
+
         if self.FLG & FEXTRA:
             res += struct.pack('<H', len(self.EXFIELD))
             res += self.EXFIELD
 
         if self.FLG & FNAME:
             res += self.FNAME.encode(FIELD_ENCODING) + b'\x00'
-       
+
         if self.FLG & FCOMMENT:
             res += self.FCOMMENT.encode(FIELD_ENCODING) + b'\x00'
 
@@ -386,7 +386,7 @@ class GzipFile:
 
         for info in reversed(gzipinfos):
             if filename == info.FNAME:
-                return info 
+                return info
 
     def getinfolist(self):
         """Return the list of members in the archive."""
@@ -419,7 +419,7 @@ class GzipFile:
             crc32 = zlib.crc32(data, crc32)
             isize = (isize + len(data)) % 0x100000000
             self.fileobj.write(encoder.compress(data))
-        
+
         crc32 = crc32 & 0xffffffff
         self.fileobj.write(encoder.flush())
 
@@ -440,7 +440,7 @@ class GzipFile:
         self.fileobj.seek(gzipinfo._data_offset)
 
         buff = b''
-        # We must set windowbits < 0 to get the data 
+        # We must set windowbits < 0 to get the data
         # (de-)compressed in raw deflate format.
         # [zlib 1.2.8 Manual: VIII. Advanced Functions]
         decoder = zlib.decompressobj(-zlib.MAX_WBITS)
@@ -539,10 +539,10 @@ class GzipFile:
 def main():
     import getopt
     from base64 import b64decode
-    
+
     logging.basicConfig(format='arcgzip: %(message)s', level=logging.INFO)
 
-    try: 
+    try:
         from __builtin__ import raw_input as _input # python2.x compatibility
     except ImportError:
         _input = input
@@ -562,7 +562,7 @@ def main():
     longopts = ('level=', 'comment=', 'content=', 'exfield=', 'encoding=', 'ascii', 'crc16', 'help')
 
     opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
-    for key,val in opts:
+    for key, val in opts:
         if key == '-a':
             action = COMPRESS
             archive, mode = val, 'a'
