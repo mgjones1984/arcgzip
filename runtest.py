@@ -4,11 +4,13 @@ import logging
 import unittest
 import getopt
 import sys
+import os
+
+TEST_DIR = os.path.join(os.path.dirname(__file__), 'test')
 
 def main():
     opts, args = getopt.getopt(sys.argv[1:], 'v')
     verbosity = 1
-    testdir = 'test/'
 
     for key, val in opts:
         if key == '-v':
@@ -16,7 +18,7 @@ def main():
 
     logging.disable(logging.WARNING)
 
-    suite = unittest.defaultTestLoader.discover(testdir)
+    suite = unittest.defaultTestLoader.discover(TEST_DIR)
     runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(suite)
 
