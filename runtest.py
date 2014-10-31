@@ -16,9 +16,13 @@ def main():
         if key == '-v':
             verbosity += 1
 
+    # Disable the logging outputs while testing except for
+    # ERROR or FATAL.
     logging.disable(logging.WARNING)
 
+    # Correct all the test modules in the TEST_DIR.
     suite = unittest.defaultTestLoader.discover(TEST_DIR)
+
     runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(suite)
 
