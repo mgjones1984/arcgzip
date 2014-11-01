@@ -48,8 +48,12 @@ Belows are some thoughts on the design issues of arcgzip.
 
 * Some user may find it useful if arcgzip provides 'no-strict' mode which skips
   all the CRC16/CRC32/ISIZE checks.
-* It might be good idea to provide an acocommodating interface to 'exfield'
+* It might be good idea to provide an accommodating interface to 'exfield'
   assuming anyone actually makes use of the data field.
 * To support stream input, we will need to implement the I/O wrapper that enable
   seeking (for some extent, at least) by buffering the input bytes. Is there any
   standard library that can be used to build that feature?
+* Currently arcgzip buffers all the file contents in memory while decompressing.
+  It's awkward, but it has an advantage that extracted file object doesn't mess
+  the original file pointer of GzipFile.
+* Pickling the _GzipInfo_ array effectively serves as an extrenal index file.
