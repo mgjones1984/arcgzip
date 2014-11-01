@@ -40,3 +40,16 @@ TODO
 ----
 
 * Support stream input.
+
+NOTE
+----
+
+Belows are some thoughts on the design issues of arcgzip.
+
+* Some user may find it useful if arcgzip provides 'no-strict' mode which skips
+  all the CRC16/CRC32/ISIZE checks.
+* It might be good idea to provide an acocommodating interface to 'exfield'
+  assuming anyone actually makes use of the data field.
+* To support stream input, we will need to implement the I/O wrapper that enable
+  seeking (for some extent, at least) by buffering the input bytes. Is there any
+  standard library that can be used to build that feature?
