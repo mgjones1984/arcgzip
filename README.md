@@ -40,6 +40,9 @@ TODO
 ----
 
 * Support stream input.
+* Implement iterator interface on GzipFile class.
+* Add functional tests for command-line options.
+* Improve the output format of 'LIST' mode.
 
 NOTE
 ----
