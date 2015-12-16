@@ -7,7 +7,7 @@ on the full support of gzip metadata.
 Specifically, this library enables you to ...
 
 * extract all of the meta information defined in [RFC-1952](http://www.gzip.org/zlib/rfc-gzip.html).
-* create an archive with fine-tuned hearder data.
+* create an archive with fine-tuned header data.
 * handle multiple files in a single gzip archive.
 
 Installation
